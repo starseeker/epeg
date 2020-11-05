@@ -21,7 +21,7 @@ include_directories(
 
 add_definitions(-Djpeg_EXPORTS)
 add_library(epeg SHARED
-  	epeg_main.c
+  	epeg.c
   	libjpeg-turbo/cdjpeg.c
   	libjpeg-turbo/rdswitch.c
   	libjpeg-turbo/transupp.c
