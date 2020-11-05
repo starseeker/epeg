@@ -3,3 +3,5 @@ target_link_libraries(rotatetest epeg jpeg)
 
 add_executable(scaletest scaletest.c)
 target_link_libraries(scaletest epeg jpeg)
+
+configure_file(example.jpg ${CMAKE_BINARY_DIR}/example.jpg COPYONLY)
