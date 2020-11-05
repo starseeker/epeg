@@ -10,6 +10,7 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 option(ENABLE_STATIC OFF)
 option(REQUIRE_SIMD ON)
+set(WITH_JPEG8 ON CACHE BOOL "Newer API" FORCE)
 
 add_subdirectory(libjpeg-turbo)
 
@@ -18,8 +19,15 @@ include_directories(
    ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg-turbo
    )
 
-add_library(epeg SHARED epeg_main.c)
-target_link_libraries(epeg turbojpeg jpeg)
+add_definitions(-Djpeg_EXPORTS)
+add_library(epeg SHARED
+  	epeg_main.c
+  	libjpeg-turbo/cdjpeg.c
+  	libjpeg-turbo/rdswitch.c
+  	libjpeg-turbo/transupp.c
+	)
+
+target_link_libraries(epeg jpeg)
 install(TARGETS epeg
    RUNTIME DESTINATION bin
    LIBRARY DESTINATION lib
