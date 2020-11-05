@@ -13,14 +13,17 @@ https://github.com/mattes/epeg
 
 cmake nasm
 
-## Install
+## Building
 
 ```sh
-git clone https://github.com/koofr/epeg.git
+git clone https://github.com/starseeker/epeg.git
 cd epeg
 mkdir build
 cd build
 cmake ..
-sudo make install
+make -j12
+cd examples
+./rotatetest
+./scaletest
 ```
 
