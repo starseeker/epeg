@@ -1,30 +1,32 @@
-project(epeg)
+project(EPEG)
 
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.12)
 
-set(CMAKE_MACOSX_RPATH 1)
+set(CMAKE_SKIP_BUILD_RPATH FALSE)
+set(CMAKE_BUILD_WITH_INSTALL_RPATH FALSE)
+set(CMAKE_INSTALL_RPATH_USE_LINK_PATH TRUE)
+set(CMAKE_INSTALL_RPATH "${CMAKE_INSTALL_PREFIX}/lib")
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
-add_library(epeg STATIC epeg_main.c)
+option(ENABLE_STATIC OFF)
+option(REQUIRE_SIMD ON)
 
-set(CMAKE_INSTALL_PREFIX ${PROJECT_SOURCE_DIR}/dist)
-file(MAKE_DIRECTORY ${CMAKE_INSTALL_PREFIX})
+add_subdirectory(libjpeg-turbo)
 
-set(LIBJPEG_LIBRARY ${CMAKE_INSTALL_PREFIX}/lib/libjpeg.a)
+include_directories(
+   ${CMAKE_CURRENT_SOURCE_DIR}
+   ${CMAKE_CURRENT_SOURCE_DIR}/libjpeg-turbo
+   )
 
-include_directories(${CMAKE_INSTALL_PREFIX}/include)
-target_link_libraries(epeg ${LIBJPEG_LIBRARY})
-
-include(ExternalProject)
-ExternalProject_Add(libjpeg
-    SOURCE_DIR ${PROJECT_SOURCE_DIR}/vendor/libjpeg-turbo-2.0.4
-    CMAKE_ARGS -DCMAKE_INSTALL_PREFIX=${CMAKE_INSTALL_PREFIX} -DCMAKE_POSITION_INDEPENDENT_CODE=True)
-
-add_dependencies(epeg libjpeg)
-
+add_library(epeg SHARED epeg_main.c)
+target_link_libraries(epeg turbojpeg jpeg)
 install(TARGETS epeg
-    ARCHIVE DESTINATION lib
-    COMPONENT libraries)
+   RUNTIME DESTINATION bin
+   LIBRARY DESTINATION lib
+   ARCHIVE DESTINATION lib)
 
-INSTALL(FILES Epeg.h
+install(FILES Epeg.h
     DESTINATION include)
+
+add_subdirectory(example)
+
