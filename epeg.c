@@ -1,4 +1,4 @@
-#include "Epeg.h"
+#include "epeg.h"
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>

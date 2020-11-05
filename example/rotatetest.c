@@ -1,6 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include "Epeg.h"
+#include "epeg.h"
 
 int main(int argc, char const *argv[])
 {
